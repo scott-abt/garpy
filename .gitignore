@@ -1,3 +1,5 @@
 *.conf
 *.db
 *.swp
+demo_simple.py
+*.log
