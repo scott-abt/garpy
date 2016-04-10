@@ -1,25 +1,34 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+"""
+Track ARP entries over time. Requires netmiko - 
+https://github.com/ktbyers/netmiko
+"""
 
-import paramiko, sys, getpass
+import netmiko, sqlite3
+from sys import exit
+from getpass import getpass
+from os import path
 
-# logging
-paramiko.util.log_to_file('getArp.log')
+def main():
 
-# hostname
-user = ''
-host = ''
+    arp_db = "arp.db"
 
-if len(sys.argv) > 1:
-    host = sys.argv[1]
-    user = sys.argv[2]
-else:
-    default_username = getpass.getuser()
-    host = input('Hostname: ')
-    user = input('Username [{0}]: '.format(default_username))
+    # Check for and set up the database
+    if path.isfile(arp_db):
+        pass
+    else:
+        # Create a new database
+        create_db = input("Database does not exist. Create it now? (y/n): ")
+        print(create_db)
+        exit()
 
-if len(user) == 0:
-    user = default_username
+    # Receive a list of IP addresses to get ARP info from.
 
-password = getpass.getpass()
+    # Check database for existing entry
 
-print(user)
+    # Add new entry or update existing
+    ## Entries: IP, MAC, First seen, Last seen
+    exit()
+
+if __name__ == "__main__":
+    main()
