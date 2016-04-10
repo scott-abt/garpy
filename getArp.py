@@ -27,7 +27,9 @@ def main():
     # Check database for existing entry
 
     # Add new entry or update existing
-    ## Entries: IP, MAC, First seen, Last seen
+    ## Entries: indx, IP, MAC, firstSeen, lastSeen, router
+    ## Figure out a way to make indx unique per entry. Could have same ip
+    ## multiple routers. Maybe hashing of some kind with ip/firstSeen/router
     exit()
 
 if __name__ == "__main__":
