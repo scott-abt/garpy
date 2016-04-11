@@ -3,3 +3,4 @@
 *.swp
 demo_simple.py
 *.log
+__pycache__
