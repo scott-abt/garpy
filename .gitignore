@@ -5,3 +5,5 @@ testfile
 demo_simple.py
 *.log
 __pycache__
+.gitignore
+.git
