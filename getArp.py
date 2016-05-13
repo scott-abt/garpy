@@ -56,8 +56,7 @@ def main():
         if create_db.lower() == "y":
             con = sqlite3.connect(arp_db)
             cur = con.cursor()
-            cur.execute("create table arp_entry(indx, IP, MAC, firstSeen, lastSeen, router)")
-            cur.execute('create unique index entries on arp_entry (indx)')
+            cur.execute("create table arp_entry(indx string primary key, IP, MAC, firstSeen, lastSeen, router)")
             con.commit()
             con.close()
         else:
@@ -69,6 +68,8 @@ def main():
 
     now_datetime = datetime.now()
     now_timestamp = now_datetime.timestamp()
+    insert_count = 0
+    update_count = 0
     for device in DEVICES:
         # Get the arp table
         device['username'] = username
@@ -94,13 +95,16 @@ def main():
             # Try to add new entry
             try:
                 cur.execute("INSERT INTO arp_entry VALUES (?,?,?,?,?,?)", [str(indxr), ip, mac, now_timestamp, now_timestamp, device['ip']])
+                insert_count += 1
                 con.commit()
             except sqlite3.IntegrityError:
                 # Update the lastSeen value.
                 cur.execute("UPDATE arp_entry SET lastSeen = ? WHERE indx = ?", [now_timestamp, str(indxr)])
+                update_count += 1
                 con.commit()
             except Exception as e:
                 raise
+    print("Updated {}, Inserted {}.".format(update_count, insert_count))
     sys.exit()
 
 if __name__ == "__main__":
