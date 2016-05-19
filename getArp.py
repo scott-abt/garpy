@@ -3,10 +3,8 @@
 Track ARP entries over time.
 """
 
-import netmiko, sqlite3, hashlib, sys, os
-import csv
+import netmiko, sqlite3, hashlib, sys, os, argparse, csv
 from getpass import getpass
-from DEVICE_LIST import DEVICES
 from datetime import datetime
 
 def GetCreds():
@@ -44,9 +42,13 @@ class Arper:
     def __str__(self):
         return self.arp_table
 
-def main():
+def main(*args):
     arp_db = "arp.db"
-    username, password = GetCreds()
+    if not args:
+        username, password = GetCreds()
+
+    else:
+        username, password = args
 
     # Check for and set up the database
     if not os.path.isfile(arp_db):
@@ -108,4 +110,13 @@ def main():
     sys.exit()
 
 if __name__ == "__main__":
-    main()
+    try:
+        from DEVICE_LIST import DEVICES
+    except Exception as e:
+        raise(e)
+
+    try:
+        from CREDS import CREDS
+        main(CREDS[0], CREDS[1])
+    except ImportError:
+        main()
