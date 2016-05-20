@@ -70,9 +70,10 @@ def main(*args):
 
     now_datetime = datetime.now()
     now_timestamp = now_datetime.timestamp()
-    insert_count = 0
-    update_count = 0
+    
     for device in DEVICES:
+        insert_count = 0
+        update_count = 0
         # Get the arp table
         device['username'] = username
         device['password'] = password
@@ -106,7 +107,7 @@ def main(*args):
                 con.commit()
             except Exception as e:
                 raise
-    print("Updated {}, Inserted {}.".format(update_count, insert_count))
+        print("Updated {}, Inserted {} from {}.".format(update_count, insert_count, device['ip']))
     sys.exit()
 
 if __name__ == "__main__":
